@@ -14,6 +14,7 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
     const classes = useClasses();
     const [isDragging, setIsDragging] = useState(false);
+    const [counts, setCounts] = useState([north, east, south, west]);
     const [angle, setAngle] = useState(0);
     const [distance, setDistance] = useState(0);
     const cardCenterRef = useRef<HTMLDivElement>(null);
@@ -63,6 +64,15 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
             setDistance(0);
             document.removeEventListener('pointermove', handleMouseMove);
             document.removeEventListener('pointerup', handleMouseUp);
+            if (angle < -45 && angle > -135) {
+                setCounts([counts[0], counts[1], counts[2] + 1, counts[3]]);
+            } else if (angle > 45 && angle < 135) {
+                    setCounts([counts[0], counts[1] + 1, counts[2], counts[3]]);
+            } else if (angle > -45 && angle < 45) {
+                setCounts([counts[0] + 1, counts[1], counts[2], counts[3]]);
+            } else {
+                setCounts([counts[0], counts[1], counts[2], counts[3] + 1]);
+            }
         };
 
         document.addEventListener('pointermove', handleMouseMove);
@@ -123,7 +133,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                     )
                 } 
                 >
-                {north}
+                {counts[0]}
             </div>
 			<div 
                 className={
@@ -135,7 +145,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                     )
                 }
             >
-                {south}
+                {counts[2]}
             </div>
 			<div 
                 className={
@@ -147,7 +157,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                     )
                 }
             >
-                {east}
+                {counts[1]}
             </div>
 			<div 
                 className={
@@ -159,7 +169,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                     )
                 }
             >
-                {west}
+                {counts[3]}
             </div>
 		</div>
 	);
