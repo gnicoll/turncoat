@@ -15,7 +15,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
     const classes = useClasses();
     const [isDragging, setIsDragging] = useState(false);
     const [angle, setAngle] = useState(0);
-    // const [distance, setDistance] = useState(0);
+    const [distance, setDistance] = useState(0);
     const cardCenterRef = useRef<HTMLDivElement>(null);
     
     const circlePath = 'M50,20c16.464,0.059 30,13.794 30,30c0,16.557 -13.443,30.031 -30,30c-16.147,-0.03 -29.971,-13.681 -30,-30c-0.03,-16.557 13.794,-30.058 30,-30Z';
@@ -38,19 +38,29 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
             const deltaY = currentY - cardCenterY;
 
             const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-            // const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             // animate the card based on the angle
             setIsDragging(true);
-            setAngle(Math.round(angle));
-            // setDistance(Math.round(distance));
+            setDistance(Math.round(distance));
+            if (angle < -45 && angle > -135) {
+                setAngle(-90);
+            } else if (angle > 45 && angle < 135) {
+                    setAngle(90);
+            } else if (angle > -45 && angle < 45) {
+                setAngle(0);
+            } else {
+                setAngle(-180);
+            }
+
+            //setAngle(Math.round(angle));
         };
 
         // listen to mouse up event and remove the mouse move listener
         const handleMouseUp = () => {
             setIsDragging(false);
             // setAngle(0);
-            // setDistance(0);
+            setDistance(0);
             document.removeEventListener('pointermove', handleMouseMove);
             document.removeEventListener('pointerup', handleMouseUp);
         };
@@ -70,6 +80,15 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                 )
             } 
         >   
+		<div 
+            className={
+                classes(
+                ['tcCard_inlay'],
+                {
+                },
+                )
+            } 
+        />   
             <motion.div 
                 animate={{ rotate: angle }}
                 className={
@@ -90,7 +109,7 @@ const Card: React.FC<CardProps> = ({ north, south, east, west }) => {
                     <svg className='svg1' width="100%" height="100%" viewBox="0 0 100 100" version="1.1">
                         <motion.path
                             d={circlePath}  
-                            animate={{ d: isDragging ? pointerPath : circlePath }}
+                            animate={{ d: isDragging && distance > 50  ? pointerPath : circlePath }}
                             />
                     </svg>
             </motion.div>
