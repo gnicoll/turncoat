@@ -1,0 +1,100 @@
+.tcCard {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    position: relative;
+}
+
+.tcCard_number {
+    padding: 5px;
+    line-height: 16px;
+    font-size: 12px;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+}
+
+.tcCard_north {
+    top: 10px;
+}
+
+.tcCard_south {
+    bottom: 10px;
+}
+
+.tcCard_east {
+    right: 10px;
+}
+
+.tcCard_west {
+    left: 10px;
+}
+
+.tcCard_highlighted {
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+}
+
+.tcCard_center {
+    touch-action: none;
+    position: relative;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    overflow: visible;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+}
+.tcCard_center_text {
+    color: white;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.svg1 {
+    z-index: 0;
+    fill-rule:evenodd;
+    clip-rule:evenodd;
+    stroke-linejoin:round;
+    stroke-miterlimit:2;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+#visiblePath {
+    opacity: 1;
+    transition: fill 0.3s ease;
+}
+
+.tcCard_center_dragging #visiblePath {
+    fill: red;
+    stroke-linejoin: round;
+    opacity: 1;
+}
+
+
+#circlePath, #pointedPath {
+    opacity: 0;
+    fill: blue;
+    stroke: blue;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
