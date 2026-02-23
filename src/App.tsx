@@ -1,11 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useEffect } from 'react'
 import Card from './components/card/'
-import Test from './components/test/'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    // listen for mouse up events and fire a custom event with the mouse position
+    const handleMouseUp = (event: MouseEvent) => {
+      const customEvent = new CustomEvent('cardDragEnd', {
+        detail: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+      });
+      window.dispatchEvent(customEvent);
+    };
+
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
 
   return (
     <>
